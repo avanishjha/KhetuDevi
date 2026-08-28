@@ -1,0 +1,285 @@
+/* ==========================================================================
+   Khetu Devi Memorial Trust
+
+   Engraved. Monumental scale, bone and dark stone, no ornament.
+
+   Built to measurements taken from the reference (Shopify Editions Winter '26):
+     type scale 17:1 (not 6:1)   ·   bold as the default weight, not regular
+     warm neutral duotone, no accent colour
+     borders on <2% of elements  ·   shadows on <1%
+     media up to 80vw            ·   ~44 viewports of room, not 25
+
+   Structure and mechanics only. No copied identity, copy or assets.
+   ========================================================================== */
+
+:root {
+  /* Warm neutral duotone. There is deliberately no accent colour — the
+     photographs will be the only colour on the page. */
+  --bone:   #F7F7EE;
+  --stone:  #DCDCD0;
+  --mid:    #5C5C4E;
+  --muted:  #909083;
+  --ink:    #292919;
+
+  --paper: var(--bone);
+  --fg:    var(--ink);
+
+  --font: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --deva: "Noto Serif Devanagari", "Nirmala UI", Georgia, serif;
+
+  /* A 17:1 scale. Discrete steps, and nothing between them. */
+  --t-xs:   0.6875rem;
+  --t-sm:   0.8125rem;
+  --t-base: 0.875rem;
+  --t-body: 1.0625rem;
+  --t-md:   1.25rem;
+  --t-lg:   1.6875rem;
+  --t-xl:   2rem;
+  --t-2xl:  clamp(2rem, 4.2vw, 2.5625rem);
+  --t-3xl:  clamp(2.5rem, 6.5vw, 3.75rem);
+  --t-4xl:  clamp(3.25rem, 12.4vw, 11rem);
+
+  --gut:  clamp(20px, 4.2vw, 72px);
+  --wide: 1400px;
+  --read: 60ch;
+
+  /* Sections are enormous. The single biggest lever on how expensive it reads. */
+  --bay:   clamp(120px, 22vh, 300px);
+  --bay-l: clamp(180px, 34vh, 460px);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+::selection { background: var(--ink); color: var(--bone); }
+
+:where(a, button, [tabindex]):focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 200;
+  background: var(--ink); color: var(--bone); padding: 14px 22px;
+  font-size: var(--t-sm); font-weight: 600;
+}
+.skip:focus { left: 16px; top: 16px; }
+
+/* ----------------------------------------------------------- Layout ---- */
+.wrap { width: min(100% - (var(--gut) * 2), var(--wide)); margin-inline: auto; }
+.bay   { padding-block: var(--bay); }
+.bay--l { padding-block: var(--bay-l); }
+
+.dark  { background: var(--ink); color: var(--bone); }
+.stoney { background: var(--stone); }
+
+/* ------------------------------------------------------------- Type ---- */
+/* Bold is the default. Regular is the exception — the inverse of before. */
+h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.035em; line-height: 0.9; text-wrap: balance; }
+
+.mono-l { font-size: var(--t-4xl); font-weight: 700; letter-spacing: -0.045em; line-height: 0.86; margin: 0; }
+.mono-m { font-size: var(--t-3xl); font-weight: 700; letter-spacing: -0.04em;  line-height: 0.92; margin: 0; }
+.mono-s { font-size: var(--t-2xl); font-weight: 700; letter-spacing: -0.05em;  line-height: 0.96; margin: 0; }
+
+/* The other end of the range. Same family — no mono, no letterspaced technical
+   labels. Those are what made the old page read as a template. */
+.eyebrow { font-size: var(--t-xs); font-weight: 600; letter-spacing: .02em; color: var(--muted); margin: 0; }
+.dark .eyebrow { color: var(--stone); }
+
+.lede { font-size: var(--t-md); line-height: 1.42; max-width: 34ch; margin: 0; }
+.body { font-size: var(--t-body); line-height: 1.58; max-width: var(--read); color: var(--mid); }
+.dark .body { color: var(--stone); }
+.body p { margin: 0; }
+.body p + p { margin-top: 1.05em; }
+.body strong { color: var(--fg); font-weight: 600; }
+.dark .body strong { color: var(--bone); }
+
+.deva { font-family: var(--deva); }
+
+/* ------------------------------------------------------------- Nav ----- */
+.nav {
+  position: fixed; inset: 0 0 auto; z-index: 40;
+  display: flex; align-items: center; gap: 24px;
+  padding: 18px var(--gut);
+  font-size: var(--t-sm);
+  transition: background 400ms var(--ease);
+}
+.nav.is-stuck { background: color-mix(in srgb, var(--bone) 92%, transparent); backdrop-filter: blur(14px); }
+.brand { font-weight: 700; letter-spacing: -.02em; text-decoration: none; font-size: var(--t-base); }
+.brand span { font-weight: 400; color: var(--muted); }
+.nav__links { margin-left: auto; display: flex; gap: clamp(14px, 1.8vw, 30px); }
+.nav__link { text-decoration: none; color: var(--mid); font-weight: 500; transition: color 180ms var(--ease); }
+.nav__link:hover, .nav__link[aria-current="true"] { color: var(--ink); }
+.nav__link:active { opacity: .55; }
+.nav__toggle {
+  display: none; margin-left: auto; background: var(--ink); color: var(--bone);
+  border: 0; border-radius: 3px; padding: 9px 15px; font: inherit; font-weight: 600; cursor: pointer;
+  transition: transform 90ms var(--ease);
+}
+.nav__toggle:active { transform: scale(.96); }
+@media (max-width: 860px) {
+  .nav__links {
+    position: fixed; inset: 0 0 auto; flex-direction: column; gap: 0;
+    background: var(--bone); padding: 74px var(--gut) 28px;
+    transform: translateY(-101%); transition: transform 520ms var(--ease);
+  }
+  .nav.is-open .nav__links { transform: translateY(0); }
+  .nav__link { padding-block: 12px; font-size: var(--t-md); }
+  .nav__toggle { display: block; position: relative; z-index: 2; }
+}
+
+/* ------------------------------------------------------------ Hero ----- */
+.hero { min-height: 100svh; display: grid; align-content: end; padding: 140px 0 var(--bay); }
+.hero__deva { font-size: var(--t-md); color: var(--muted); display: block; margin-bottom: clamp(18px, 3vw, 32px); }
+.hero__title { max-width: 13ch; }
+.hero__foot {
+  display: flex; flex-wrap: wrap; gap: 20px 60px; align-items: flex-end;
+  margin-top: clamp(36px, 5vw, 76px); padding-top: 24px;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+}
+.hero__foot .lede { max-width: 38ch; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: var(--t-base); font-weight: 600; text-decoration: none;
+  padding: 15px 26px; border-radius: 3px; border: 0; cursor: pointer;
+  background: var(--ink); color: var(--bone);
+  transition: transform 90ms var(--ease), opacity 180ms var(--ease);
+}
+.btn--ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 30%, transparent); }
+.btn:hover { opacity: .86; }
+.btn:active { transform: scale(.975); }
+.dark .btn { background: var(--bone); color: var(--ink); }
+.dark .btn--ghost { background: transparent; color: var(--bone); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bone) 36%, transparent); }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* ------------------------------------------------------------ Media ---- */
+/* Media runs large — up to 80% of the viewport. Never a sidebar thumbnail. */
+.plate { margin: 0; }
+.plate__frame {
+  position: relative; aspect-ratio: var(--ratio, 3 / 2);
+  overflow: hidden; background: var(--stone); border-radius: 3px;
+}
+.plate__frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--focal, 50% 40%); }
+.plate__fallback {
+  position: absolute; inset: 0; display: grid; place-content: center;
+  gap: 12px; text-align: center; padding: 30px; background: var(--stone); color: var(--muted);
+}
+.plate.is-loaded .plate__fallback { display: none; }
+.plate__mark { font-size: var(--t-xl); font-weight: 700; color: color-mix(in srgb, var(--ink) 26%, transparent); }
+.plate__hint { font-size: var(--t-xs); line-height: 1.7; }
+.plate__hint code { display: block; margin-top: 5px; color: var(--mid); }
+.plate figcaption { margin-top: 14px; font-size: var(--t-sm); color: var(--muted); }
+.dark .plate figcaption { color: var(--stone); }
+
+.media-wide { width: min(100%, 80vw); margin-inline: auto; }
+
+/* ----------------------------------------------------------- Blocks ---- */
+.duo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(30px, 6vw, 120px); align-items: start; }
+@media (max-width: 860px) { .duo { grid-template-columns: 1fr; gap: 36px; } }
+.stack > * + * { margin-top: clamp(20px, 2.6vw, 34px); }
+
+/* Figures: no boxes, no rules. The numeral carries it. */
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: clamp(34px, 5vw, 90px); }
+.fig__n { font-size: var(--t-3xl); font-weight: 700; letter-spacing: -.045em; line-height: .9; }
+.fig__t { margin-top: 12px; font-size: var(--t-base); color: var(--muted); max-width: 22ch; line-height: 1.5; }
+.dark .fig__t { color: var(--stone); }
+
+/* Lists: one hairline, nothing else */
+.list { border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent); }
+.row {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(14px, 3vw, 60px); padding: clamp(24px, 3vw, 40px) 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  align-items: baseline;
+}
+.row__t { font-size: var(--t-lg); font-weight: 600; letter-spacing: -.025em; line-height: 1.08; }
+.row__d { font-size: var(--t-base); color: var(--muted); line-height: 1.55; }
+.dark .row__d { color: var(--stone); }
+@media (max-width: 720px) { .row { grid-template-columns: 1fr; gap: 8px; } }
+
+/* The vow — the one place the page goes dark and stays there */
+.vow__stage { min-height: 100svh; display: grid; align-content: center; }
+
+/* Route: the barefoot journey */
+.route { position: relative; padding-left: 42px; }
+.route__base, .route__fill { position: absolute; left: 3px; top: 10px; bottom: 10px; width: 2px; }
+.route__base { background: color-mix(in srgb, currentColor 18%, transparent); }
+.route__fill { background: currentColor; transform: scaleY(0); transform-origin: top; }
+.route ol { list-style: none; margin: 0; padding: 0; }
+.step { position: relative; padding-bottom: clamp(30px, 4vw, 56px); }
+.step:last-child { padding-bottom: 0; }
+.step::before {
+  content: ""; position: absolute; left: -42px; top: 10px;
+  width: 9px; height: 9px; border-radius: 50%; background: currentColor; opacity: .2;
+  transition: opacity 400ms var(--ease), transform 400ms var(--ease);
+}
+.step.is-on::before { opacity: 1; transform: scale(1.25); }
+.step__w { font-size: var(--t-xs); font-weight: 600; opacity: .6; }
+.step h3 { font-size: var(--t-md); font-weight: 600; letter-spacing: -.02em; margin-top: 6px; line-height: 1.15; }
+.step p { margin: 8px 0 0; font-size: var(--t-base); line-height: 1.55; max-width: 46ch; opacity: .72; }
+
+/* Contact */
+.card { display: flex; flex-direction: column; gap: 6px; }
+.card__r { font-size: var(--t-xs); font-weight: 600; color: var(--muted); }
+.card__n { font-size: var(--t-lg); font-weight: 600; letter-spacing: -.025em; }
+.card__w { font-size: var(--t-base); color: var(--muted); line-height: 1.5; }
+.card__t { font-size: var(--t-md); font-weight: 600; text-decoration: none; align-self: flex-start; margin-top: 6px; }
+.card__t:hover { opacity: .7; }
+.card__t:active { opacity: .5; }
+
+.foot { padding-block: var(--bay) 40px; }
+.foot__nav { display: flex; flex-wrap: wrap; gap: 10px 34px; }
+.foot__nav a { text-decoration: none; color: var(--stone); font-size: var(--t-base); font-weight: 500; }
+.foot__nav a:hover { color: var(--bone); }
+.foot__meta {
+  margin-top: clamp(40px, 6vw, 80px); padding-top: 22px;
+  border-top: 1px solid color-mix(in srgb, var(--bone) 18%, transparent);
+  display: flex; flex-wrap: wrap; gap: 10px 40px; font-size: var(--t-sm); color: var(--stone);
+}
+
+/* ----------------------------------------------------------- Motion ---- */
+html.js:not(.no-motion) [data-reveal] { visibility: hidden; }
+html.js [data-reveal].is-split { visibility: visible; }
+html.no-motion [data-reveal] { visibility: visible; }
+.word-mask { display: inline-block; overflow: hidden; vertical-align: top; }
+/* No CSS transform here: GSAP parses translateY(%) into an absolute px `y` and
+   caches it, after which yPercent:0 cannot clear it. Set from JS instead. */
+.word { display: inline-block; will-change: transform; }
+html.no-motion .word { transform: none; }
+
+html.js:not(.no-motion) .rise { opacity: 0; transform: translateY(22px); }
+html.no-motion .rise { opacity: 1; transform: none; }
+
+.scrub-word { --word-progress: 1; display: inline-block; opacity: calc(.16 + .84 * var(--word-progress)); will-change: opacity; }
+html.no-motion .scrub-word, html:not(.js) .scrub-word { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  html [data-reveal] { visibility: visible; }
+  .word { transform: none; }
+  .rise { opacity: 1 !important; transform: none !important; }
+  .scrub-word { opacity: 1 !important; }
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .nav.is-stuck { background: var(--bone); backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  :root { --muted: #4A4A3E; --mid: #292919; }
+  .btn--ghost { box-shadow: inset 0 0 0 2px var(--ink); }
+}

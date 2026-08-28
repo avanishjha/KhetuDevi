@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Predefined skill demos — pick a direction</title>
+<style>
+  :root {
+    --bg: #0e0e10; --panel: #16161a; --line: #26262c;
+    --fg: #ecece f; --fg: #ececef; --dim: #8b8b96; --accent: #d8734a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding: 48px clamp(20px, 5vw, 64px) 80px;
+  }
+  h1 { font-size: clamp(24px, 3vw, 34px); margin: 0 0 10px; letter-spacing: -0.02em; }
+  .sub { color: var(--dim); max-width: 70ch; margin: 0 0 8px; }
+  .hint { color: var(--accent); font-size: 13px; margin: 0 0 40px; }
+  h2 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--dim); margin: 44px 0 14px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--line); font-weight: 600;
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px; }
+  a.card {
+    display: block; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 8px; padding: 16px 17px 17px; text-decoration: none; color: inherit;
+    transition: border-color .18s, background .18s, transform .18s;
+  }
+  a.card:hover { border-color: var(--accent); background: #1c1c21; transform: translateY(-2px); }
+  .name { font-weight: 600; font-size: 15px; margin-bottom: 5px; }
+  .name span { color: var(--accent); }
+  .desc { color: var(--dim); font-size: 13.5px; line-height: 1.5; }
+  .tag {
+    display: inline-block; margin-top: 10px; font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--dim); border: 1px solid var(--line);
+    border-radius: 3px; padding: 3px 7px;
+  }
+  code { background: #202027; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>Predefined skill demos</h1>
+<p class="sub">
+  Every card opens a real, working demo that ships with the installed skill — not a mockup and not
+  something I wrote. Click through, and tell me which ones to build the Trust site from. You can
+  mix: one for the page structure, one for the surface treatment, and any number of components.
+</p>
+<p class="hint">Requires both dev servers running. If a link 404s, the demos server on port 4322 has stopped.</p>
+
+<h2>Page structure — the bones</h2>
+<div class="grid">
+  <a class="card" href="http://localhost:4322/documentary-brutalist-agency/demo/index.html" target="_blank">
+    <div class="name">Documentary Brutalist Agency</div>
+    <div class="desc">Billboard typography, hard black-and-white chapters, exposed grids, irregular collages, brutalist navigation.</div>
+    <span class="tag">Loud · asymmetric</span>
+  </a>
+  <a class="card" href="http://localhost:4322/editorial-portfolio-chapters/demo/index.html" target="_blank">
+    <div class="name">Editorial Portfolio Chapters</div>
+    <div class="desc">Dark editorial shell, full-bleed media, colour-coded chapters, oversized service type, decisive contact finale.</div>
+    <span class="tag">Chaptered</span>
+  </a>
+  <a class="card" href="http://localhost:4322/cinematic-scroll-storytelling/demo/index.html" target="_blank">
+    <div class="name">Cinematic Scroll Storytelling</div>
+    <div class="desc">Sticky card stacks, kinetic typography, scroll-scrubbed transitions, parallax, immersive preloader.</div>
+    <span class="tag">Motion-led</span>
+  </a>
+  <a class="card" href="http://localhost:4322/gsap-scrolltrigger-storytelling/demo/index.html" target="_blank">
+    <div class="name">GSAP ScrollTrigger Storytelling</div>
+    <div class="desc">Cinematic sticky storytelling with progressive reveals and scroll-synced section transitions. The biggest demo here.</div>
+    <span class="tag">Pinned sequences</span>
+  </a>
+  <a class="card" href="http://localhost:4322/scroll-world-storytelling/demo/index.html" target="_blank">
+    <div class="name">Scroll World Storytelling</div>
+    <div class="desc">Turns a long-form story into one connected visual journey rather than stacked sections.</div>
+    <span class="tag">Spatial</span>
+  </a>
+  <a class="card" href="http://localhost:4322/editorial-service-booking/demo/index.html" target="_blank">
+    <div class="name">Editorial Service Booking</div>
+    <div class="desc">Warm editorial layout, serif-led identity, documentary portrait crops. Built for salons and clinics, but the warmest human treatment in the set.</div>
+    <span class="tag">Warm · portraits</span>
+  </a>
+  <a class="card" href="http://localhost:4322/image-first-grid-layout/demo/index.html" target="_blank">
+    <div class="name">Image-First Grid Layout</div>
+    <div class="desc">Full-bleed photography leads, structural guide lines, anchored content blocks. Shared demo also showing masked reveals and border gradients.</div>
+    <span class="tag">Photo-led</span>
+  </a>
+  <a class="card" href="http://localhost:4322/agency-grid-layout-minimal/demo/index.html" target="_blank">
+    <div class="name">Agency Grid Layout Minimal</div>
+    <div class="desc">Disciplined editorial grid with oversized typography and quiet uppercase labels.</div>
+    <span class="tag">Minimal</span>
+  </a>
+  <a class="card" href="http://localhost:4322/editorial-tech/demo/index.html" target="_blank">
+    <div class="name">Editorial Tech</div>
+    <div class="desc">Magazine composition with asymmetrical grids and cinematic media bands.</div>
+    <span class="tag">Asymmetric</span>
+  </a>
+  <a class="card" href="http://localhost:4322/book-serif-index/demo/index.html" target="_blank">
+    <div class="name">Book Serif Index</div>
+    <div class="desc">Archival book-reader: serif pages, mono index navigation, aged paper, margin notes.</div>
+    <span class="tag">Archival</span>
+  </a>
+</div>
+
+<h2>Surface and palette — the skin</h2>
+<div class="grid">
+  <a class="card" href="http://localhost:4322/orange-clean-paper-saas/demo/index.html" target="_blank">
+    <div class="name">Orange Clean Paper</div>
+    <div class="desc">Warm neutrals, orange accents, rounded premium forms.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/light-mode-paper-technical/demo/index.html" target="_blank">
+    <div class="name">Light Mode Paper Technical</div>
+    <div class="desc">Warm paper surfaces, dark outer framing, bracketed geometry.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/high-contrast-skeuomorphic-clean/demo/index.html" target="_blank">
+    <div class="name">High Contrast Skeuomorphic</div>
+    <div class="desc">Molded dark surfaces, tactile inset depth, crisp light separation.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/mesh-gradient-dark-blue-clean/demo/index.html" target="_blank">
+    <div class="name">Mesh Gradient Dark Blue</div>
+    <div class="desc">Near-black navy, procedural mesh atmosphere, planetary depth.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/dither-laser-dark-mode/demo/index.html" target="_blank">
+    <div class="name">Dither Laser Dark Mode</div>
+    <div class="desc">Near-black surfaces, ordered-dither texture, thin accent laser.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/blue-cloudy-clean-modern/demo/index.html" target="_blank">
+    <div class="name">Blue Cloudy Clean Modern</div>
+    <div class="desc">Luminous sky atmosphere, drifting cloud light, serene type.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/glass-dark-ui/demo/index.html" target="_blank">
+    <div class="name">Glass Dark UI</div>
+    <div class="desc">Frosted dark surfaces with gradient borders.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/clean-minimal-beige-light-mode/demo/index.html" target="_blank">
+    <div class="name">Clean Minimal Beige <span>(v1 used this)</span></div>
+    <div class="desc">The system behind my first attempt — included so you can see what I was working from.</div>
+  </a>
+</div>
+
+<h2>Components and effects — mix in freely</h2>
+<div class="grid">
+  <a class="card" href="http://localhost:4322/marquee-loop/demo/index.html" target="_blank">
+    <div class="name">Marquee Loop</div><div class="desc">Seamless infinite scrolling rows.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/progressive-blur/demo/index.html" target="_blank">
+    <div class="name">Progressive Blur</div><div class="desc">Layered backdrop-filter depth fading from an edge.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/reveal-hover-effect/demo/index.html" target="_blank">
+    <div class="name">Reveal Hover Effect</div><div class="desc">Cursor spotlight revealing a second aligned image.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/scroll-progress-timeline/demo/index.html" target="_blank">
+    <div class="name">Scroll Progress Timeline</div><div class="desc">A process drawn as a progressing line with active steps.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/scroll-scrubbed-visual-sequence/demo/index.html" target="_blank">
+    <div class="name">Scroll Scrubbed Sequence</div><div class="desc">Pinned stage scrubbing video, images, canvas or SVG.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/scroll-scrubbed-word-reveal/demo/index.html" target="_blank">
+    <div class="name">Scroll Scrubbed Word Reveal</div><div class="desc">Text revealing word by word as you scroll.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/staggered-word-reveal/demo/index.html" target="_blank">
+    <div class="name">Staggered Word Reveal</div><div class="desc">Words fade and rise on entering the viewport.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/falling-leaves/demo/index.html" target="_blank">
+    <div class="name">Falling Leaves <span>(v2 used this)</span></div><div class="desc">Tumbling petals and leaves. The marigold layer came from here.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/gooey-blob-system/demo/index.html" target="_blank">
+    <div class="name">Gooey Blob System</div><div class="desc">SVG-filter shapes merging into one fluid mass.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/webgl-3d-object/demo/index.html" target="_blank">
+    <div class="name">WebGL 3D Object</div><div class="desc">A real lit 3D hero object.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/globe-particles/demo/index.html" target="_blank">
+    <div class="name">Globe Particles</div><div class="desc">Luminous particle globe with orbital ring.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/corner-lasers/demo/index.html" target="_blank">
+    <div class="name">Corner Lasers</div><div class="desc">Thin beams, emitter node, bloom and fog.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/threejs-landscape/demo/index.html" target="_blank">
+    <div class="name">Three.js Landscape</div><div class="desc">A live terrain that sits a subject in a real place.</div>
+  </a>
+  <a class="card" href="http://localhost:4322/threejs-weather/demo/index.html" target="_blank">
+    <div class="name">Three.js Weather</div><div class="desc">Rain, storm, snow as controllable scene states.</div>
+  </a>
+</div>
+
+</body>
+</html>

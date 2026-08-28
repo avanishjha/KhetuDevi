@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "khetu-devi",
+      "runtimeExecutable": "C:/Users/avani/anaconda3/python.exe",
+      "runtimeArgs": [
+        "D:/Projects/KhetuDevi/.claude/devserver.py",
+        "4321",
+        "D:/Projects/KhetuDevi"
+      ],
+      "port": 4321
+    },
+    {
+      "name": "skill-demos",
+      "runtimeExecutable": "C:/Users/avani/anaconda3/python.exe",
+      "runtimeArgs": [
+        "D:/Projects/KhetuDevi/.claude/devserver.py",
+        "4322",
+        "C:/Users/avani/.claude/skills"
+      ],
+      "port": 4322
+    }
+  ]
+}
