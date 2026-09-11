@@ -27,6 +27,17 @@
     }, 2500);
   })();
 </script>
+<style>
+  /* Critical and inline on purpose: the curtain has to be black on the very
+     first paint. It used to be drawn only by intro.js, which runs after the
+     deferred scripts download, so the hero flashed before the preloader.
+     intro.js adds .is-live once its canvas is opaque and takes over. If no
+     script ever does, the failsafe lifts the curtain after six seconds. */
+  html.intro-armed .intro { position: fixed; inset: 0; z-index: 90; background: #0B0B07; }
+  html.intro-armed .intro.is-live { background: transparent; }
+  html.intro-armed .intro:not(.is-live) { animation: intro-failsafe .5s ease 6s forwards; }
+  @keyframes intro-failsafe { to { opacity: 0; visibility: hidden; } }
+</style>
 </head>
 <body>
 

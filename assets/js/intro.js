@@ -27,7 +27,11 @@
     play: function (opts) {
       opts = opts || {};
       var host = document.querySelector(".intro");
-      if (!host || reduced) {
+      // Too late for a cinematic opening: if the scripts took this long, the
+      // visitor has already been looking at black for five seconds. Show the
+      // page instead. (index.html also lifts the curtain by CSS at six.)
+      var late = performance.now() > 5000;
+      if (!host || reduced || late) {
         if (host) host.remove();
         root.classList.remove("intro-armed");
         return Promise.resolve(0);
@@ -133,6 +137,7 @@
 
       var easeOut = function (x) { return 1 - Math.pow(1 - x, 3); };
       var prevR = 0;
+      var live = false;
 
       return new Promise(function (resolve) {
         var t0 = performance.now();
@@ -165,6 +170,13 @@
           // Black curtain with a hole punched through it
           ctx.fillStyle = "#0B0B07";
           ctx.fillRect(0, 0, W, H);
+
+          // The canvas is opaque now, so the CSS black that covered the page
+          // from the first paint (index.html) can hand over to it.
+          if (!live) {
+            host.classList.add("is-live");
+            live = true;
+          }
 
           var r = 0;
           if (t > start) {
