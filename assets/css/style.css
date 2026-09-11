@@ -367,3 +367,30 @@ html.intro-armed .hero__in { transform: scale(1.055); }
       rgba(247, 247, 238, .65) 100%);
   }
 }
+
+/* ==========================================================================
+   Hero into the portrait: no seam
+   ========================================================================== */
+
+/* The grain filled the whole hero box and stopped on a hard line exactly
+   where the 80vw portrait begins, while the gutters beside the portrait are
+   flat bone. Fade the grain out into the page colour over the bottom of the
+   hero, so the hero dissolves into the page instead of butting into it.
+   A static overlay, so it costs nothing per frame. */
+.bg--grain::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 42%;
+  background: linear-gradient(to bottom, rgba(247, 247, 238, 0), var(--bone) 88%);
+  pointer-events: none;
+}
+
+/* At 80vw a 16:9 frame outgrows a laptop screen (1536 by 864 in a 1920 by
+   832 window), so the portrait swallowed the whole view straight after the
+   hero. Limit the figure WIDTH to what that height allows, instead of capping
+   the frame height: a max-height on an aspect-ratio box narrows it and pins
+   it to the left, and the caption no longer lines up. Sizing the figure keeps
+   frame and caption together, centred, and never taller than 78% of the
+   screen. */
+.media-wide { width: min(100%, 80vw, calc(min(78svh, 860px) * (var(--ratio, 3 / 2)))); }
