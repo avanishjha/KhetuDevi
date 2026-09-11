@@ -56,7 +56,9 @@
 <main id="top">
 
   <!-- ================================ Hero ============================== -->
-  <section class="hero">
+  <section class="hero bg-host">
+    <div class="bg bg--grain" data-bg="grainient" aria-hidden="true"
+         data-bg-options='{"color1":"#F7F7EE","color2":"#EFEADB","color3":"#E3DECC","timeSpeed":0.12,"warpFrequency":4,"warpSpeed":1.2,"warpAmplitude":60,"blendSoftness":0.35,"rotationAmount":300,"noiseScale":1.6,"grainAmount":0.05,"grainScale":1.6,"contrast":1,"zoom":0.9}'></div>
     <div class="wrap hero__in">
       <span class="hero__deva deva par" data-depth="26">खेतू देवी</span>
       <h1 class="mono-l hero__title par" data-depth="12">A life that became a light</h1>
@@ -115,7 +117,9 @@
   </section>
 
   <!-- ============================ II — The Journey ======================= -->
-  <section class="bay" id="journey" aria-labelledby="journey-h">
+  <section class="bay bg-host" id="journey" aria-labelledby="journey-h">
+    <div class="bg bg--threads" data-bg="threads" aria-hidden="true"
+         data-bg-options='{"color":"#292919","amplitude":1.1,"distance":0,"enableMouseInteraction":true}'></div>
     <div class="wrap duo">
       <div class="stack">
         <p class="eyebrow">The Journey Behind the Legacy</p>
@@ -151,7 +155,11 @@
 
   <!-- ====================== IV — The Vow (dark chapter) ================== -->
   <section class="dark" id="vow" aria-labelledby="vow-h">
-    <div class="vow__stage">
+    <div class="vow__stage bg-host">
+      <div class="bg bg--rays" data-bg="light-rays" aria-hidden="true"
+           data-bg-options='{"raysOrigin":"top-center","raysColor":"#FFE9C4","raysSpeed":0.55,"lightSpread":0.85,"rayLength":1.7,"fadeDistance":1.1,"saturation":0.9,"followMouse":true,"mouseInfluence":0.08,"noiseAmount":0.05,"distortion":0.03}'></div>
+      <div class="bg bg--motes" data-bg="particles" aria-hidden="true"
+           data-bg-options='{"particleCount":110,"particleSpread":11,"speed":0.06,"particleColors":["#FFE9C4","#FFFFFF","#F2D3A0"],"moveParticlesOnHover":true,"particleHoverFactor":0.55,"alphaParticles":true,"particleBaseSize":70,"sizeRandomness":1,"cameraDistance":20}'></div>
       <div class="wrap">
         <p class="eyebrow" style="margin-bottom: clamp(24px,4vw,50px)">A Mother's Faith</p>
         <h2 class="mono-m" id="vow-h" data-scrub style="max-width: 18ch">
@@ -369,7 +377,9 @@
   </section>
 
   <!-- ============================== Philosophy =========================== -->
-  <section class="dark bay--l" aria-labelledby="phil-h">
+  <section class="dark bay--l bg-host" aria-labelledby="phil-h">
+    <div class="bg bg--rays" data-bg="light-rays" aria-hidden="true"
+         data-bg-options='{"raysOrigin":"top-left","raysColor":"#FFE9C4","raysSpeed":0.45,"lightSpread":0.9,"rayLength":1.6,"fadeDistance":1.0,"saturation":0.85,"followMouse":true,"mouseInfluence":0.08,"noiseAmount":0.05,"distortion":0.03}'></div>
     <div class="wrap">
       <p class="eyebrow">Our Philosophy</p>
       <blockquote class="mono-l" id="phil-h" data-scrub
@@ -445,6 +455,7 @@
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
 <script src="assets/js/intro.js" defer></script>
 <script src="assets/js/main.js" defer></script>
+<script type="module" src="assets/js/bg/index.js"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>

@@ -119,7 +119,9 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.035em; line-height:
   font-size: var(--t-sm);
   transition: background 400ms var(--ease);
 }
-.nav.is-stuck { background: color-mix(in srgb, var(--bone) 92%, transparent); backdrop-filter: blur(14px); }
+/* No backdrop blur: over an animated canvas the browser has to re-blur the
+   strip under the bar on every frame the canvas changes. */
+.nav.is-stuck { background: color-mix(in srgb, var(--bone) 96%, transparent); }
 .brand { font-weight: 700; letter-spacing: -.02em; text-decoration: none; font-size: var(--t-base); }
 .brand span { font-weight: 400; color: var(--muted); }
 .nav__links { margin-left: auto; display: flex; gap: clamp(14px, 1.8vw, 30px); }
@@ -260,13 +262,15 @@ html.no-motion [data-reveal] { visibility: visible; }
 .word-mask { display: inline-block; overflow: hidden; vertical-align: top; }
 /* No CSS transform here: GSAP parses translateY(%) into an absolute px `y` and
    caches it, after which yPercent:0 cannot clear it. Set from JS instead. */
-.word { display: inline-block; will-change: transform; }
+/* No permanent will-change: it gave every animated heading word its own
+   compositor layer for the life of the page. GSAP promotes while it tweens. */
+.word { display: inline-block; }
 html.no-motion .word { transform: none; }
 
 html.js:not(.no-motion) .rise { opacity: 0; transform: translateY(22px); }
 html.no-motion .rise { opacity: 1; transform: none; }
 
-.scrub-word { --word-progress: 1; display: inline-block; opacity: calc(.16 + .84 * var(--word-progress)); will-change: opacity; }
+.scrub-word { --word-progress: 1; display: inline-block; opacity: calc(.16 + .84 * var(--word-progress)); }
 html.no-motion .scrub-word, html:not(.js) .scrub-word { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -321,4 +325,45 @@ html.intro-armed .hero__in { transform: scale(1.055); }
   html.intro-armed .nav, html.intro-armed .rail { opacity: 1; }
   html.intro-armed .hero__in { transform: none; }
   .hero__in, .par { transition: none !important; transform: none !important; }
+}
+
+/* ==========================================================================
+   WebGL backgrounds — React Bits ports, see assets/js/bg/
+   ========================================================================== */
+
+/* The host keeps its own stacking context, so a background can never leak
+   above the content or under a neighbouring section. */
+.bg-host { position: relative; isolation: isolate; }
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;   /* hover is read from the host section instead */
+}
+.bg canvas { display: block; width: 100% !important; height: 100% !important; }
+.bg-host > :not(.bg) { position: relative; z-index: 1; }
+
+/* Opacity lives on the canvas itself, never on the .bg container. Opacity on
+   a container with children, a CSS mask, or a blend mode each make the
+   browser composite through an extra offscreen surface on every frame the
+   canvas changes. On the canvas alone it is a cheap layer property. */
+.bg--grain canvas   { opacity: 1; }
+.bg--threads canvas { opacity: .3; }
+.bg--rays canvas    { opacity: .95; }
+.bg--motes canvas   { opacity: .8; }
+
+/* Journey: fade the threads out under the column of body copy on wide
+   screens. A static bone overlay gives the same result the old mask did
+   (ink at about 10% on the right) without re-masking a moving canvas. */
+@media (min-width: 861px) {
+  .bg--threads::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+      rgba(247, 247, 238, 0) 40%,
+      rgba(247, 247, 238, .65) 60%,
+      rgba(247, 247, 238, .65) 100%);
+  }
 }
