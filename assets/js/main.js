@@ -213,23 +213,44 @@
     });
   }
 
-  /* ------------------------------------------------------------- Intro --- */
-  function initIntro() {
-    var hero = document.querySelector(".hero");
-    if (!hero) return;
-    var title = hero.querySelector(".hero__title");
-    if (title) { splitMasked(title); gsap.set(title, { autoAlpha: 1 }); }
+  /* --------------------------------------------------- Pointer parallax -- */
+  /* Each layer moves a different amount so the hero has depth rather than
+     sliding as one plane. Damped toward the pointer, never 1:1 — a backdrop
+     that tracks exactly reads as a bug. */
+  function initParallax() {
+    if (reduced || window.matchMedia("(pointer: coarse)").matches) return;
+    var layers = Array.prototype.slice.call(document.querySelectorAll(".par[data-depth]"));
+    if (!layers.length) return;
 
-    var tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    if (title) {
-      tl.fromTo(title.querySelectorAll(".word"), { yPercent: 110 },
-        { yPercent: 0, duration: 1.05, stagger: .05 }, 0.1);
+    var tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+    function step() {
+      raf = 0;
+      cx += (tx - cx) * 0.065;
+      cy += (ty - cy) * 0.065;
+      for (var i = 0; i < layers.length; i++) {
+        var d = parseFloat(layers[i].getAttribute("data-depth")) || 0;
+        layers[i].style.transform =
+          "translate3d(" + (-cx * d).toFixed(2) + "px," + (-cy * d * 0.5).toFixed(2) + "px,0)";
+      }
+      if (Math.abs(tx - cx) > 0.0005 || Math.abs(ty - cy) > 0.0005) raf = requestAnimationFrame(step);
     }
-    tl.from(hero.querySelector(".hero__deva"), { opacity: 0, duration: .7 }, 0);
-    tl.from(hero.querySelector(".hero__foot"), { opacity: 0, y: 18, duration: .8 }, 0.55);
-
-    gsap.delayedCall(6, function () { if (tl.progress() < 1) tl.progress(1); });
+    window.addEventListener("pointermove", function (e) {
+      tx = (e.clientX / Math.max(1, window.innerWidth) - 0.5) * 2;
+      ty = (e.clientY / Math.max(1, window.innerHeight) - 0.5) * 2;
+      if (!raf) raf = requestAnimationFrame(step);
+    }, { passive: true });
+    window.addEventListener("blur", function () { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(step); });
   }
+
+  /* ------------------------------------------------------------- Intro --- */
+  /* The hero deliberately has NO entrance animation of its own.
+
+     It is fully composed while the curtain is still closed, so the aperture
+     uncovers a finished page. Animating the headline in after the reveal is
+     what made the opening read as "the intro finished and now the site is
+     loading" — the reference sites both uncover something already there.
+     The only motion is the pull-back, which is a CSS transition on
+     `.hero__in` released when `.intro-armed` comes off the root. */
 
   /* --------------------------------------------------------------- Boot -- */
   function boot() {
@@ -238,6 +259,9 @@
 
     if (!hasGSAP || reduced) {
       root.classList.add("no-motion");
+      root.classList.remove("intro-armed");
+      var curtain = document.querySelector(".intro");
+      if (curtain) curtain.remove();
       initRoute();
       initScrubbedText();
       return;
@@ -247,10 +271,25 @@
     gsap.registerPlugin(ST);
 
     initSmoothScroll();
-    initIntro();
+    initParallax();
     initReveals();
     initScrubbedText();
     initRoute();
+
+    function raise() {
+      if (root.classList.contains("intro-done")) return;
+      root.classList.add("intro-done");
+      root.classList.remove("intro-armed");
+      if (lenis) lenis.start();
+      ST.refresh();
+    }
+    if (window.Intro) {
+      if (lenis) lenis.stop();
+      window.Intro.play().then(raise);
+      window.setTimeout(raise, 4000);   // failsafe: never trap the page
+    } else {
+      raise();
+    }
 
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () { ST.refresh(); });

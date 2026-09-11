@@ -19,6 +19,9 @@
   (function () {
     var d = document.documentElement;
     d.classList.add("js");
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      d.classList.add("intro-armed");
+    }
     window.setTimeout(function () {
       if (!d.classList.contains("motion-ready")) d.classList.add("no-motion");
     }, 2500);
@@ -28,6 +31,15 @@
 <body>
 
 <a class="skip" href="#story">Skip to the story</a>
+
+<!-- Opening: black, wordmark, then the aperture tears open (assets/js/intro.js) -->
+<div class="intro" aria-hidden="true">
+  <canvas></canvas>
+  <div class="intro__mark">
+    <b>खेतू देवी</b>
+    <span>Memorial Trust</span>
+  </div>
+</div>
 
 <header class="nav">
   <a class="brand" href="#top">Khetu Devi <span>Memorial Trust</span></a>
@@ -45,19 +57,19 @@
 
   <!-- ================================ Hero ============================== -->
   <section class="hero">
-    <div class="wrap">
-      <span class="hero__deva deva">खेतू देवी</span>
-      <h1 class="mono-l hero__title" data-reveal>A life that became a light</h1>
-      <div class="hero__foot">
-        <p class="lede rise">
+    <div class="wrap hero__in">
+      <span class="hero__deva deva par" data-depth="26">खेतू देवी</span>
+      <h1 class="mono-l hero__title par" data-depth="12">A life that became a light</h1>
+      <div class="hero__foot par" data-depth="5">
+        <p class="lede">
           A mother's memory carried forward — not through words alone, but through
           service in education, healthcare and the welfare of those in need.
         </p>
-        <div class="btns rise">
+        <div class="btns">
           <a class="btn" href="#vow">Her story</a>
           <a class="btn btn--ghost" href="#initiatives">The work</a>
         </div>
-        <p class="eyebrow rise">Bhadkha, Barmer, Rajasthan &middot; Est. 2024</p>
+        <p class="eyebrow">Bhadkha, Barmer, Rajasthan &middot; Est. 2024</p>
       </div>
     </div>
   </section>
@@ -431,6 +443,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
+<script src="assets/js/intro.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
