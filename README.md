@@ -1,90 +1,51 @@
-# Khetu Devi Memorial Trust — website
+# Khetu Devi Memorial Trust
 
-A single-page memorial and institutional site for the Khetu Devi Memorial Trust,
-Bhadkha, Barmer, Rajasthan. All narrative content comes from
-`Khetu_Devi_Memorial_Trust_Website_Content.docx`. No facts, figures, names,
-dates or claims have been invented.
+A single-page memorial and institutional website for the Khetu Devi Memorial Trust, Bhadkha, Barmer, Rajasthan. The family history, names, dates, programme details and figures are retained from the original website content.
 
-## Run it
+## Local preview
+
+```bash
+node .claude/preview-server.cjs 4321
+```
+
+Open <http://localhost:4321>. The dependency-free Node server disables caching so edits appear on reload. The existing Python alternative also works when Python is installed:
 
 ```bash
 python .claude/devserver.py 4321 .
 ```
 
-Open <http://localhost:4321>. Four files, no build step, no dependencies beyond
-GSAP/Lenis from CDN. Any static host serves it as-is.
+There is no build or installation step. Deploy `index.html` and `assets/` to any static host. GSAP, ScrollTrigger, Lenis, fonts and the ambient OGL effects load from CDNs; the page remains readable when those services are unavailable.
 
-## The design
+## Visual experience
 
-**Engraved.** Monumental scale, bone and dark stone, no ornament.
+- A native WebGL diya, with a softly lit bronze bowl and a gently breathing flame, responds subtly to the pointer and scroll. It uses no external 3D library and has a static SVG fallback.
+- Scroll reveals bring in headings, memorial reliefs and service cards. A moving values ribbon, dimensional book, illustrated service areas and reading-progress line extend the visual language through the page.
+- The existing chapter backgrounds and barefoot journey remain, with improved animation lifecycle management.
+- Warm bone, stone, olive and bronze keep the presentation tied to the memorial's subject. All new artwork is abstract; no likeness of a real person or documentary scene has been fabricated.
 
-Built to measurements taken from the supplied reference (Shopify Editions
-Winter '26) rather than to taste:
+`assets/css/style.css` contains the original foundation; `assets/css/experience.css` adds the responsive visual treatment. `assets/js/main.js` coordinates scroll motion and navigation; `assets/js/sculpture.js` owns the WebGL sculpture.
 
-| | Reference | This site |
-| --- | --- | --- |
-| Type scale | 10 → 176px (17.6:1) | 11 → 159px (14.5:1) |
-| Dominant weight | 700 | 700 |
-| Accent colour | none — warm neutral duotone | none |
-| Elements with shadows | 0.2% | 0.2% |
-| Largest media | 80% viewport width | 80% viewport width |
+The diya is an original procedural illustration. Directional references were
+[Anantaya's oil lamps](https://www.anantayadecor.in/collections/all/subcat_pooja)
+for the simple vessel form and [Noguchi's Akari light sculptures](https://shop.noguchi.org/collections/akari-light-sculptures)
+for warm, diffuse illumination. No reference photographs or product models are embedded.
 
-Palette: bone `#F7F7EE`, warm grey `#DCDCD0`, mid `#5C5C4E`, muted `#909083`,
-ink `#292919`. One typeface (Archivo) plus Noto Serif Devanagari for Hindi.
-No mono, no letterspaced technical labels, no accent — the photographs will be
-the only colour on the page.
+## Motion and accessibility
 
-## Adding the photographs
+- **Pause motion** settles scroll effects and pauses decorative rendering. **Resume motion** restores it. The control respects OS reduced-motion preferences, including changes made while the page is open.
+- The sculpture runs at up to 30fps, caps its pixel ratio at 1.6, and pauses offscreen or in a hidden tab. Ambient effects run only in the most visible section and retain their clocks while paused.
+- With reduced motion or unavailable GSAP, all text stays readable and navigation remains usable. A timeout releases the opening curtain even if the deferred scripts fail to load.
+- Mobile navigation supports Escape, outside clicks and keyboard focus; closed navigation links are inert. Anchors keep their URLs and keyboard focus when smooth scrolling is enabled.
 
-Each plate shows a designed frame until a real file lands. Drop it at the path
-and it appears — no code change.
+## Real photographs
 
-| File | Aspect | Appears as |
-| --- | --- | --- |
-| `assets/img/khetu-devi-portrait.jpg` | 16:9 | Below the hero, 80vw |
-| `assets/img/punyatithi.jpg` | 21:9 | Before Chapter VI, 80vw |
+The two photo slots currently show finished abstract artwork. To use supplied photographs, place the files below and change each image's `data-photo-src` attribute to `src` in `index.html`:
 
-Both run large, so supply the highest resolution you have (2400px+ on the long
-edge). Set `--focal` on the figure if a face crops badly, e.g.
-`style="--ratio: 16/9; --focal: 50% 30%"`. Correct the `alt` text to match.
+| File | Location |
+| --- | --- |
+| `assets/img/khetu-devi-portrait.jpg` | Memorial below the hero |
+| `assets/img/punyatithi.jpg` | Annual remembrance panel |
 
-There is room for two more photographs if you have them — say the word and I'll
-place them.
+Use high-resolution source photographs. Adjust `--focal` on the figure to control cropping, for example `--focal: 50% 30%`, and confirm that the alt text matches the supplied photograph. Failed image loads retain the artwork.
 
-## Motion
-
-GSAP + ScrollTrigger, with Lenis as the only smooth-scroll engine. Deliberately
-restrained: masked word reveals on headings, a scrubbed reveal on the vow and
-the philosophy line, and a progress line drawing down the barefoot journey.
-
-- `prefers-reduced-motion: reduce` renders every final state, no pinning or
-  scrubbing, and drops smooth scrolling.
-- If GSAP fails to load, a failsafe adds `.no-motion` and the full static page
-  renders. Nothing needs JavaScript to be readable.
-- `prefers-reduced-transparency` and `prefers-contrast` are both handled.
-- Press states on every control (feedback on pointer-down, not release).
-- Split headings keep an unsplit accessible name.
-
-## Removed
-
-The Three.js landscape and weather system were cut. Rendered in context they
-read as a video-game scene, which is what was making the page look cheap — and
-the reference contains no procedural 3D anywhere. `assets/vendor/three.min.js`
-and `assets/js/world.js` were deleted with it.
-
-One thing worth keeping from that work if it ever returns: GSAP parses a CSS
-`transform: translateY(112%)` into an absolute pixel `y` and caches it, after
-which `yPercent: 0` cannot clear it. Masked-reveal offsets must be set from JS,
-never CSS. That single bug caused the invisible hero in three earlier builds.
-
-## Not included
-
-- **No photographs of Khetu Devi or her family have been generated or sourced.**
-  She was a real person; inventing her likeness would be fabrication.
-- No testimonials, logos, awards, or figures beyond the source document.
-- No donation flow — that needs real account details and a provider decision.
-
-## Also here
-
-`.claude/demo-gallery.html` lists the skill demos considered along the way
-(needs `python .claude/devserver.py 4322 ~/.claude/skills`).
+No donation flow is included; the existing telephone contacts remain intact.

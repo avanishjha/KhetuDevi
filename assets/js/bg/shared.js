@@ -12,7 +12,9 @@
        or at all under prefers-reduced-motion (one still frame instead)
    ========================================================================== */
 
-export const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+// A live export keeps existing importers compatible when the OS preference changes.
+export let REDUCED = motionPreference.matches;
 export const COARSE = window.matchMedia('(pointer: coarse)').matches;
 
 export function hexToRgb(hex) {
@@ -34,6 +36,7 @@ export function renderDpr(w, h, { scale = 1, maxDim = 1920 } = {}) {
 }
 
 const root = document.documentElement;
+let paused = root.classList.contains('motion-paused');
 const underCurtain = () => root.classList.contains('intro-armed');
 
 /* --- one section at a time ------------------------------------------------ */
@@ -69,6 +72,16 @@ const hostIO = new IntersectionObserver(
 );
 
 document.addEventListener('visibilitychange', syncAll);
+document.addEventListener('motion-preference-change', (event) => {
+  paused = Boolean(event.detail && event.detail.paused);
+  syncAll();
+});
+const onMotionChange = (event) => {
+  REDUCED = event.matches;
+  syncAll(); // cancel pending frames; each canvas keeps its last still frame
+};
+if (motionPreference.addEventListener) motionPreference.addEventListener('change', onMotionChange);
+else motionPreference.addListener(onMotionChange);
 // The opening curtain lifts by removing .intro-armed from <html>.
 new MutationObserver(syncAll).observe(root, { attributes: true, attributeFilter: ['class'] });
 
@@ -81,28 +94,39 @@ export function runWhenVisible(container, build, { fps = 30 } = {}) {
     hostIO.observe(host);
   }
 
-  const interval = 1000 / fps;
+  const interval = 1000 / Math.max(1, fps);
   let scene = null;
   let raf = 0;
-  let t0 = 0;
+  let elapsed = 0;
+  let lastTick = null;
   let lastDraw = -Infinity;
 
+  const shouldRun = () =>
+    scene && host === activeHost && !document.hidden && !underCurtain() && !REDUCED && !paused;
+
   const frame = (t) => {
+    raf = 0;
+    // Recheck at frame time in case visibility changed after the frame was queued.
+    if (!shouldRun()) return;
+    if (lastTick !== null) elapsed += Math.min(Math.max(t - lastTick, 0), 100);
+    lastTick = t;
+    if (t - lastDraw >= interval - 1) {
+      lastDraw = t;
+      scene.render(elapsed);
+    }
     raf = requestAnimationFrame(frame);
-    if (t - lastDraw < interval - 1) return; // hold to the frame budget
-    lastDraw = t;
-    scene.render(t - t0);
   };
 
   const runner = {
     sync() {
-      const shouldRun =
-        scene && host === activeHost && !document.hidden && !underCurtain() && !REDUCED;
-      if (shouldRun && !raf) {
+      if (shouldRun() && !raf) {
+        lastTick = null;
+        lastDraw = -Infinity;
         raf = requestAnimationFrame(frame);
-      } else if (!shouldRun && raf) {
+      } else if (!shouldRun() && raf) {
         cancelAnimationFrame(raf);
         raf = 0;
+        lastTick = null;
       }
     }
   };
@@ -121,7 +145,6 @@ export function runWhenVisible(container, build, { fps = 30 } = {}) {
       }
       if (!scene) return;
 
-      t0 = performance.now();
       scene.render(0); // first frame now — also the reduced-motion still
 
       const built = scene;

@@ -20,7 +20,7 @@
   "use strict";
 
   var root = document.documentElement;
-  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   window.Intro = {
     /* Returns a promise that settles when the page should be live. */
@@ -31,7 +31,7 @@
       // visitor has already been looking at black for five seconds. Show the
       // page instead. (index.html also lifts the curtain by CSS at six.)
       var late = performance.now() > 5000;
-      if (!host || reduced || late) {
+      if (!host || motionPreference.matches || root.classList.contains("motion-paused") || document.hidden || late) {
         if (host) host.remove();
         root.classList.remove("intro-armed");
         return Promise.resolve(0);
@@ -39,11 +39,18 @@
 
       var canvas = host.querySelector("canvas");
       var mark = host.querySelector(".intro__mark");
-      var ctx = canvas.getContext("2d");
+      var ctx = null;
+      try { ctx = canvas && canvas.getContext("2d"); } catch (err) { /* use the finished page */ }
+      if (!ctx) {
+        host.remove();
+        root.classList.remove("intro-armed");
+        return Promise.resolve(0);
+      }
 
       var W = 0, H = 0, dpr = 1, maxR = 0;
       function size() {
         W = window.innerWidth; H = window.innerHeight;
+        cx = W * 0.42; cy = H * 0.46;
         dpr = Math.min(window.devicePixelRatio || 1, 2);
         canvas.width = Math.round(W * dpr);
         canvas.height = Math.round(H * dpr);
@@ -143,6 +150,9 @@
         var t0 = performance.now();
         var last = t0;
         var released = false;
+        var finished = false;
+        var raf = 0;
+        var watchdog = 0;
 
         // Tell the page to start its own entrance as the aperture clears
         function release() {
@@ -151,7 +161,38 @@
           resolve(0);
         }
 
+        function finish() {
+          if (finished) return;
+          finished = true;
+          cancelAnimationFrame(raf);
+          window.clearTimeout(watchdog);
+          window.removeEventListener("resize", size);
+          window.removeEventListener("pagehide", finish);
+          document.removeEventListener("visibilitychange", onVisibilityChange);
+          document.removeEventListener("motion-preference-change", onMotionPause);
+          if (motionPreference.removeEventListener) motionPreference.removeEventListener("change", onMotionChange);
+          else motionPreference.removeListener(onMotionChange);
+          host.remove();
+          root.classList.remove("intro-armed");
+          release();
+        }
+
+        function onMotionChange(event) {
+          if (event.matches) finish();
+        }
+
+        function onVisibilityChange() {
+          if (document.hidden) finish();
+        }
+
+        function onMotionPause(event) {
+          if (event.detail && event.detail.paused) finish();
+        }
+
         function frame(now) {
+          raf = 0;
+          if (finished) return;
+          if (motionPreference.matches || root.classList.contains("motion-paused") || document.hidden) { finish(); return; }
           var t = (now - t0) / 1000;
           var dt = Math.min(0.05, (now - last) / 1000);
           last = now;
@@ -200,13 +241,19 @@
           drawGrains(dt);
 
           if (t < total || grains.length) {
-            requestAnimationFrame(frame);
+            raf = requestAnimationFrame(frame);
           } else {
-            host.remove();
-            window.removeEventListener("resize", size);
+            finish();
           }
         }
-        requestAnimationFrame(frame);
+        if (motionPreference.addEventListener) motionPreference.addEventListener("change", onMotionChange);
+        else motionPreference.addListener(onMotionChange);
+        document.addEventListener("visibilitychange", onVisibilityChange);
+        document.addEventListener("motion-preference-change", onMotionPause);
+        window.addEventListener("pagehide", finish);
+        // Covers suspended/throttled frames and canvas failures during playback.
+        watchdog = window.setTimeout(finish, Math.ceil((total + 0.8) * 1000));
+        raf = requestAnimationFrame(frame);
       });
     }
   };

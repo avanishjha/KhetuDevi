@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/style.css" />
+<link rel="stylesheet" href="assets/css/experience.css" />
 
 <script>
   (function () {
@@ -23,7 +24,12 @@
       d.classList.add("intro-armed");
     }
     window.setTimeout(function () {
-      if (!d.classList.contains("motion-ready")) d.classList.add("no-motion");
+      if (!d.classList.contains("motion-ready")) {
+        d.classList.add("no-motion");
+        d.classList.remove("intro-armed");
+        var intro = document.querySelector(".intro");
+        if (intro) intro.remove();
+      }
     }, 2500);
   })();
 </script>
@@ -42,6 +48,7 @@
 <body>
 
 <a class="skip" href="#story">Skip to the story</a>
+<div class="reading-progress" aria-hidden="true"></div>
 
 <!-- Opening: black, wordmark, then the aperture tears open (assets/js/intro.js) -->
 <div class="intro" aria-hidden="true">
@@ -53,7 +60,7 @@
 </div>
 
 <header class="nav">
-  <a class="brand" href="#top">Khetu Devi <span>Memorial Trust</span></a>
+  <a class="brand" href="#top"><span class="brand__symbol" aria-hidden="true">✳</span><span class="brand__name">Khetu Devi <span>Memorial Trust</span></span></a>
   <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
   <nav class="nav__links" id="nav-links" aria-label="Primary">
     <a class="nav__link" href="#story">Story</a>
@@ -67,37 +74,56 @@
 <main id="top">
 
   <!-- ================================ Hero ============================== -->
-  <section class="hero bg-host">
-    <div class="bg bg--grain" data-bg="grainient" aria-hidden="true"
-         data-bg-options='{"color1":"#F7F7EE","color2":"#EFEADB","color3":"#E3DECC","timeSpeed":0.12,"warpFrequency":4,"warpSpeed":1.2,"warpAmplitude":60,"blendSoftness":0.35,"rotationAmount":300,"noiseScale":1.6,"grainAmount":0.05,"grainScale":1.6,"contrast":1,"zoom":0.9}'></div>
+  <section class="hero bg-host" aria-labelledby="hero-h">
     <div class="wrap hero__in">
-      <span class="hero__deva deva par" data-depth="26">खेतू देवी</span>
-      <h1 class="mono-l hero__title par" data-depth="12">A life that became a light</h1>
-      <div class="hero__foot par" data-depth="5">
-        <p class="lede">
-          A mother's memory carried forward — not through words alone, but through
-          service in education, healthcare and the welfare of those in need.
-        </p>
-        <div class="btns">
-          <a class="btn" href="#vow">Her story</a>
-          <a class="btn btn--ghost" href="#initiatives">The work</a>
+      <div class="hero__copy">
+        <p class="hero__eyebrow"><span></span> A legacy of love &amp; service</p>
+        <span class="hero__deva deva">खेतू देवी</span>
+        <h1 class="mono-l hero__title" id="hero-h">A life that<br>became<br><em>a light.</em></h1>
+        <div class="hero__foot">
+          <p class="lede">A mother's love, carried forward through education, compassion and a lifetime of giving back.</p>
+          <div class="btns">
+            <a class="btn" href="#story">Discover her story <span aria-hidden="true">↗</span></a>
+            <a class="hero__text-link" href="#initiatives">Explore the work <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
-        <p class="eyebrow">Bhadkha, Barmer, Rajasthan &middot; Est. 2024</p>
+      </div>
+      <div class="hero__visual" aria-hidden="true">
+        <div class="sculpture__halo"></div>
+        <div class="sculpture__fallback"><img src="assets/img/diya-fallback.svg" alt="" width="600" height="600" /></div>
+        <canvas id="legacy-sculpture"></canvas>
+        <div class="sculpture__shadow"></div>
+        <span class="sculpture__note">One light. Countless lives.</span>
+        <span class="sculpture__index">The light she left behind</span>
+      </div>
+      <div class="hero__bottom">
+        <p class="eyebrow">Bhadkha, Rajasthan <span>Est. 2024</span></p>
+        <button class="motion-toggle" type="button" aria-pressed="false">Pause motion</button>
+        <a class="scroll-cue" href="#remembrance">Scroll to discover <span aria-hidden="true">↓</span></a>
       </div>
     </div>
   </section>
 
-  <!-- The portrait, large. -->
-  <figure class="plate media-wide rise" style="--ratio: 16 / 9">
-    <div class="plate__frame">
-      <img src="assets/img/khetu-devi-portrait.jpg" alt="Portrait of Late Smt. Khetu Devi" loading="eager" decoding="async" />
-      <div class="plate__fallback">
+  <!-- Abstract memorial artwork. Add src to the image when a real portrait is supplied. -->
+  <figure class="plate media-wide memorial-plate" id="remembrance" style="--ratio: 24 / 11">
+    <div class="plate__frame memory-art">
+      <img data-photo-src="assets/img/khetu-devi-portrait.jpg" alt="Portrait of Late Smt. Khetu Devi" loading="lazy" decoding="async" />
+      <div class="plate__fallback memorial-art">
+        <div class="memorial-art__arches" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <span class="memorial-art__overline">In loving memory</span>
         <span class="plate__mark deva">खेतू देवी</span>
-        <span class="plate__hint">Portrait of Khetu Devi<code>assets/img/khetu-devi-portrait.jpg</code></span>
+        <span class="memorial-art__line">Her love lives on in every act of service.</span>
+        <span class="memorial-art__date">A life remembered. A legacy continued.</span>
       </div>
     </div>
     <figcaption>Late Smt. Khetu Devi &middot; in memoriam, 31 July 2020</figcaption>
   </figure>
+
+  <div class="values-ribbon" aria-label="Love, service, education and humanity">
+    <div class="values-ribbon__track" aria-hidden="true">
+      <span>Love</span><i>✳</i><span>Service</span><i>✳</i><span>Education</span><i>✳</i><span>Humanity</span><i>✳</i><span>Love</span><i>✳</i><span>Service</span><i>✳</i>
+    </div>
+  </div>
 
   <!-- ============================ I — Our Story ========================== -->
   <section class="bay" id="story" aria-labelledby="story-h">
@@ -270,12 +296,14 @@
     </div>
   </section>
 
-  <figure class="plate media-wide rise" style="--ratio: 21 / 9">
-    <div class="plate__frame">
-      <img src="assets/img/punyatithi.jpg" alt="The annual punyatithi gathering at Khariya Tala, Bhadkha" loading="lazy" decoding="async" />
-      <div class="plate__fallback">
-        <span class="plate__mark">Punyatithi</span>
-        <span class="plate__hint">The annual gathering, Khariya Tala<code>assets/img/punyatithi.jpg</code></span>
+  <figure class="plate media-wide gathering-plate" style="--ratio: 21 / 9">
+    <div class="plate__frame memory-art">
+      <img data-photo-src="assets/img/punyatithi.jpg" alt="The annual punyatithi gathering at Khariya Tala, Bhadkha" loading="lazy" decoding="async" />
+      <div class="plate__fallback gathering-art">
+        <div class="gathering-art__sun" aria-hidden="true"></div>
+        <span class="memorial-art__overline">Together, in remembrance</span>
+        <span class="plate__mark">A light that<br>brings us together.</span>
+        <span class="memorial-art__line">31 July · Khariya Tala, Bhadkha</span>
       </div>
     </div>
     <figcaption>Observed every 31 July at Khariya Tala, Bhadkha</figcaption>
@@ -336,6 +364,27 @@
       <p class="eyebrow">Our Major Initiatives</p>
       <h2 class="mono-m" id="init-h" data-reveal style="margin-top: 22px">Twelve programmes, one intention</h2>
 
+      <div class="service-grid">
+        <a class="service-card service-card--education" href="#initiative-education">
+          <div class="service-card__top"><span>01 / Education</span><span aria-hidden="true">↗</span></div>
+          <div class="service-card__art" aria-hidden="true"><div class="art-book"><i></i><i></i><i></i><i></i></div></div>
+          <h3>Make room<br>for a dream.</h3>
+          <p>Scholarships and support for the next generation.</p>
+        </a>
+        <a class="service-card service-card--care" href="#initiative-care">
+          <div class="service-card__top"><span>02 / Healthcare</span><span aria-hidden="true">↗</span></div>
+          <div class="service-card__art" aria-hidden="true"><div class="art-care"><i></i><i></i><i></i></div></div>
+          <h3>A little care.<br>A lasting difference.</h3>
+          <p>Standing beside patients and the families who care for them.</p>
+        </a>
+        <a class="service-card service-card--community" href="#initiative-community">
+          <div class="service-card__top"><span>03 / Community</span><span aria-hidden="true">↗</span></div>
+          <div class="service-card__art" aria-hidden="true"><div class="art-community"><i></i><i></i><i></i></div></div>
+          <h3>Rooted in love.<br>Growing in service.</h3>
+          <p>Keeping compassion, culture and human connection alive.</p>
+        </a>
+      </div>
+
       <div class="figs rise" style="margin: clamp(60px,9vw,140px) 0">
         <div><div class="fig__n">102</div><p class="fig__t">Rural students receiving annual scholarships, 51 boys and 51 girls</p></div>
         <div><div class="fig__n">&#8377;5,100</div><p class="fig__t">Awarded to each student, every year</p></div>
@@ -344,13 +393,13 @@
       </div>
 
       <div class="list rise">
-        <div class="row"><span class="row__t">Annual Punyatithi: Service and Remembrance</span><span class="row__d">Every 31 July, a programme in her memory — an all-night devotional gathering, the blessings of saints, and a large community bhandara.</span></div>
-        <div class="row"><span class="row__t">Scholarships for Rural Students</span><span class="row__d">Annual scholarships of &#8377;5,100 each to 51 deserving boys and 51 deserving girls from rural areas.</span></div>
+        <div class="row" id="initiative-community"><span class="row__t">Annual Punyatithi: Service and Remembrance</span><span class="row__d">Every 31 July, a programme in her memory — an all-night devotional gathering, the blessings of saints, and a large community bhandara.</span></div>
+        <div class="row" id="initiative-education"><span class="row__t">Scholarships for Rural Students</span><span class="row__d">Annual scholarships of &#8377;5,100 each to 51 deserving boys and 51 deserving girls from rural areas.</span></div>
         <div class="row"><span class="row__t">Prerna Samman</span><span class="row__d">Honouring outstanding contributions in different fields — to recognise good work, and to inspire others to service.</span></div>
         <div class="row"><span class="row__t">Supporting Dreams of Doctors and Engineers</span><span class="row__d">Support for economically weaker students, driven by the belief that financial hardship should never extinguish talent.</span></div>
         <div class="row"><span class="row__t">Support for Medical Education</span><span class="row__d">Two students pursuing MBBS supported through their college fees, and one female MBBS student's complete educational expenses borne.</span></div>
         <div class="row"><span class="row__t">Support for Engineering Education</span><span class="row__d">Three engineering students supported through payment of their complete college fees.</span></div>
-        <div class="row"><span class="row__t">Patient Welfare at District Hospital, Barmer</span><span class="row__d">A 60 &times; 80 feet shelter before the Mother and Child Department — seating for attendants, overnight rest, and a water cooler.</span></div>
+        <div class="row" id="initiative-care"><span class="row__t">Patient Welfare at District Hospital, Barmer</span><span class="row__d">A 60 &times; 80 feet shelter before the Mother and Child Department — seating for attendants, overnight rest, and a water cooler.</span></div>
         <div class="row"><span class="row__t">Medical Financial Assistance</span><span class="row__d">Financial assistance provided from time to time to needy patients requiring serious treatment and surgery.</span></div>
         <div class="row"><span class="row__t">Spiritual and Cultural Awareness</span><span class="row__d">Preserving spiritual and cultural values, and keeping them meaningful in everyday life through compassion and service.</span></div>
         <div class="row"><span class="row__t">Building Construction and Community Contributions</span><span class="row__d">A major contribution towards a Vedic school at Baytu, and participation in service activities at spiritual places across the country.</span></div>
@@ -366,6 +415,9 @@
       <div class="stack">
         <p class="eyebrow">A Special Initiative</p>
         <h2 class="mono-m" id="book-h" data-reveal>Bringing &ldquo;Maa Jeevan Hai&rdquo; to every family</h2>
+        <div class="book-stage" aria-hidden="true">
+          <div class="book-object"><div class="book-object__pages"></div><div class="book-object__cover"><span>A tribute to motherhood</span><b class="deva">माँ<br>जीवन है</b><i>✳</i><span>Maa Jeevan Hai<br>Shri Kamlesh Chandra</span></div></div>
+        </div>
       </div>
       <div class="body rise">
         <p>
@@ -466,6 +518,7 @@
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
 <script src="assets/js/intro.js" defer></script>
 <script src="assets/js/main.js" defer></script>
+<script src="assets/js/sculpture.js" defer></script>
 <script type="module" src="assets/js/bg/index.js"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
