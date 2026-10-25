@@ -209,7 +209,7 @@
           }
 
           // Black curtain with a hole punched through it
-          ctx.fillStyle = "#0B0B07";
+          ctx.fillStyle = "#8F3405";
           ctx.fillRect(0, 0, W, H);
 
           // The canvas is opaque now, so the CSS black that covered the page

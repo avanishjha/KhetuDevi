@@ -15,11 +15,11 @@
 :root {
   /* Warm neutral duotone. There is deliberately no accent colour — the
      photographs will be the only colour on the page. */
-  --bone:   #F7F7EE;
-  --stone:  #DCDCD0;
-  --mid:    #5C5C4E;
-  --muted:  #909083;
-  --ink:    #292919;
+  --bone:   #FFF4E0;
+  --stone:  #FBDDB0;
+  --mid:    #7A3A12;
+  --muted:  #B07A4A;
+  --ink:    #2E1708;
 
   --paper: var(--bone);
   --fg:    var(--ink);
@@ -85,7 +85,7 @@ a { color: inherit; }
 .bay   { padding-block: var(--bay); }
 .bay--l { padding-block: var(--bay-l); }
 
-.dark  { background: var(--ink); color: var(--bone); }
+.dark  { background: #B5470A; color: var(--bone); }
 .stoney { background: var(--stone); }
 
 /* ------------------------------------------------------------- Type ---- */
@@ -284,7 +284,7 @@ html.no-motion .scrub-word, html:not(.js) .scrub-word { opacity: 1; }
   .nav.is-stuck { background: var(--bone); backdrop-filter: none; }
 }
 @media (prefers-contrast: more) {
-  :root { --muted: #4A4A3E; --mid: #292919; }
+  :root { --muted: #5A3A20; --mid: #2E1708; }
   .btn--ghost { box-shadow: inset 0 0 0 2px var(--ink); }
 }
 
@@ -362,9 +362,9 @@ html.intro-armed .hero__in { transform: scale(1.055); }
     position: absolute;
     inset: 0;
     background: linear-gradient(90deg,
-      rgba(247, 247, 238, 0) 40%,
-      rgba(247, 247, 238, .65) 60%,
-      rgba(247, 247, 238, .65) 100%);
+      rgba(255, 244, 224, 0) 40%,
+      rgba(255, 244, 224, .65) 60%,
+      rgba(255, 244, 224, .65) 100%);
   }
 }
 
@@ -382,7 +382,7 @@ html.intro-armed .hero__in { transform: scale(1.055); }
   position: absolute;
   inset: auto 0 0 0;
   height: 42%;
-  background: linear-gradient(to bottom, rgba(247, 247, 238, 0), var(--bone) 88%);
+  background: linear-gradient(to bottom, rgba(255, 244, 224, 0), var(--bone) 88%);
   pointer-events: none;
 }
 
